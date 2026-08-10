@@ -1,107 +1,117 @@
 import React, { useEffect, useState } from "react";
 
 const businesses = [
-  {
-    name: "North Splash ProClean",
-    category: "Commercial Cleaning",
-    short: "Commercial cleaning",
-    description:
-      "Professional commercial cleaning solutions for businesses, facilities, and properties.",
-    domain: "NSProClean.com",
-    url: "https://nsproclean.com",
-    initials: "PC",
-  },
-  {
-    name: "North Splash Grounds",
-    category: "Landscaping",
-    short: "Landscaping",
-    description:
-      "Professional landscaping and grounds services designed to keep properties looking their best.",
-    domain: "NSGrounds.com",
-    url: "https://nsgrounds.com",
-    initials: "NG",
-  },
-  {
-    name: "North Splash PropertyCare",
-    category: "Property Maintenance",
-    short: "Property maintenance",
-    description:
-      "Reliable property maintenance solutions for residential and commercial properties.",
-    domain: "NSPropertyCare.com",
-    url: "https://nspropertycare.com",
-    initials: "PP",
-  },
-  {
-    name: "NS Social Club",
-    category: "Bowling & Entertainment",
-    short: "Entertainment",
-    description:
-      "A social entertainment destination bringing recreation, bowling, events, and community together.",
-    domain: "NSSocialClub.com",
-    url: "https://nssocialclub.com",
-    initials: "SC",
-  },
-  {
-    name: "North Splash Renew",
-    category: "Pressure Washing",
-    short: "Exterior renewal",
-    description:
-      "Professional pressure washing and exterior cleaning designed to restore curb appeal.",
-    domain: "NSRenew.com",
-    url: "https://nsrenew.com",
-    initials: "NR",
-  },
-  {
-    name: "North Splash ClearOut",
-    category: "Junk Removal",
-    short: "Junk removal",
-    description:
-      "Property cleanouts and junk removal for homes, businesses, renovations, and moves.",
-    domain: "NSClearOut.com",
-    url: "https://nsclearout.com",
-    initials: "CO",
-  },
-  {
-    name: "NS Dynasty",
-    category: "Apartments",
-    short: "Residential living",
-    description:
-      "Residential communities focused on comfort, convenience, quality, and modern living.",
-    domain: "NSDynasty.com",
-    url: "https://nsdynasty.com",
-    initials: "ND",
-  },
-  {
-    name: "Riche Et Beau",
-    category: "Women's Clothing",
-    short: "Women's fashion",
-    description:
-      "An elevated women's fashion brand focused on style, confidence, and individuality.",
-    domain: "riche-et-beau-site.vercel.app",
-    url: "https://riche-et-beau-site.vercel.app/",
-    initials: "RB",
-  },
-  {
-    name: "North Splash Auto Luxe",
-    category: "Mobile Detailing",
-    short: "Mobile detailing",
-    description:
-      "Premium mobile automotive detailing brought directly to customers.",
-    domain: "northsplash.com",
-    url: "https://northsplash.com/",
-    initials: "AL",
-  },
-  {
-    name: "NS Venture Works",
-    category: "Business Essentials",
-    short: "Business essentials",
-    description:
-      "Business essentials and professional services helping entrepreneurs build and grow.",
-    domain: "northsplash.shop",
-    url: "https://www.northsplash.shop/",
-    initials: "VW",
-  },
+{
+name: "North Splash ProClean",
+category: "Commercial Cleaning",
+short: "Commercial cleaning",
+description:
+"Professional commercial cleaning solutions for businesses, facilities, and properties.",
+domain: "NSProClean.com",
+url: "https://nsproclean.com",
+initials: "PC",
+},
+
+{
+name: "North Splash Grounds",
+category: "Landscaping",
+short: "Landscaping",
+description:
+"Professional landscaping and grounds services designed to keep properties looking their best.",
+domain: "NSGrounds.com",
+url: "https://nsgrounds.com",
+initials: "NG",
+},
+
+{
+name: "North Splash PropertyCare",
+category: "Property Maintenance",
+short: "Property maintenance",
+description:
+"Reliable property maintenance solutions for residential and commercial properties.",
+domain: "NSPropertyCare.com",
+url: "https://nspropertycare.com",
+initials: "PP",
+},
+
+{
+name: "NS Social Club",
+category: "Bowling & Entertainment",
+short: "Entertainment",
+description:
+"A social entertainment destination bringing recreation, bowling, events, and community together.",
+domain: "NSSocialClub.com",
+url: "https://nssocialclub.com",
+initials: "SC",
+},
+
+{
+name: "North Splash Renew",
+category: "Pressure Washing",
+short: "Exterior renewal",
+description:
+"Professional pressure washing and exterior cleaning designed to restore curb appeal.",
+domain: "NSRenew.com",
+url: "https://nsrenew.com",
+initials: "NR",
+},
+
+{
+name: "North Splash ClearOut",
+category: "Junk Removal",
+short: "Junk removal",
+description:
+"Property cleanouts and junk removal for homes, businesses, renovations, and moves.",
+domain: "NSClearOut.com",
+url: "https://nsclearout.com",
+initials: "CO",
+},
+
+{
+name: "NS Dynasty",
+category: "Apartments",
+short: "Residential living",
+description:
+"Residential communities focused on comfort, convenience, quality, and modern living.",
+domain: "NSDynasty.com",
+url: "https://nsdynasty.com",
+initials: "ND",
+},
+
+{
+name: "Riche Et Beau",
+category: "Women's Clothing",
+short: "Women's fashion",
+description:
+"An elevated women's fashion brand focused on style, confidence, and individuality.",
+domain: "riche-et-beau-site.vercel.app",
+url: "https://riche-et-beau-site.vercel.app/",
+initials: "RB",
+},
+
+{
+name: "North Splash Auto Luxe",
+category: "Mobile Detailing",
+short: "Mobile detailing",
+description:
+"Premium mobile automotive detailing brought directly to customers.",
+domain: "northsplash.com",
+url: "https://northsplash.com/",
+initials: "AL",
+},
+
+{
+name: "NS Venture Works",
+category: "Business Essentials",
+short: "Business essentials",
+description:
+"Business essentials and professional services helping entrepreneurs build and grow.",
+domain: "northsplash.shop",
+url: "https://www.northsplash.shop/",
+initials: "VW",
+},
 ];
+
 const pageData = {
   home: {
     title: "Home",
