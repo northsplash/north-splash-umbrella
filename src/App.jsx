@@ -91,7 +91,7 @@ const BUSINESSES = [
     category: "Women's Clothing",
     name: "Riche Et Beau",
     shortName: "Riche Et Beau",
-    domain: "https://richeetbeau.com",
+    domain: "https://riche-et-beau-site.vercel.app/",
     description:
       "A women's fashion brand centered around style, confidence, elegance, and expressing your individual beauty.",
     accent: "Fashion",
@@ -103,7 +103,7 @@ const BUSINESSES = [
     category: "Mobile Detailing",
     name: "North Splash Auto Luxe",
     shortName: "NS Auto Luxe",
-    domain: "https://nsautoluxe.com",
+    domain: "https://northsplash.com/",
     description:
       "Mobile automotive detailing designed to bring a premium vehicle-care experience directly to the customer.",
     accent: "Automotive",
@@ -115,7 +115,7 @@ const BUSINESSES = [
     category: "Business Essentials",
     name: "NS Venture Works",
     shortName: "NS Venture Works",
-    domain: "https://nsventureworks.com",
+    domain: "https://www.northsplash.shop/",
     description:
       "Business essentials and creative solutions designed to help entrepreneurs build, brand, launch, and grow.",
     accent: "Business Solutions",
