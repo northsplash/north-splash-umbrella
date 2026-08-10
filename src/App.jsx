@@ -646,16 +646,20 @@ function App() {
                   <p>{business.description}</p>
 
                   <div className="business-footer">
-                    <span>{business.domain}</span>
+  <span>{business.domain}</span>
 
-                    <a
-                      href={business.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      Visit Website ↗
-                    </a>
-                  </div>
+  <a
+    className="business-website-link"
+    href={business.url}
+    target="_blank"
+    rel="noopener noreferrer"
+    onClick={(event) => {
+      event.stopPropagation();
+    }}
+  >
+    Visit Website ↗
+  </a>
+</div>
                 </article>
               ))}
             </div>
