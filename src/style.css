@@ -2054,3 +2054,28 @@ main,
     transform: none;
   }
 }
+
+/* =========================================================
+   BUSINESS WEBSITE LINKS
+   Keeps Visit Website buttons clickable above card effects
+   ========================================================= */
+
+.business-card {
+  position: relative;
+}
+
+.business-footer {
+  position: relative;
+  z-index: 20;
+}
+
+.business-website-link {
+  position: relative;
+  z-index: 30;
+  pointer-events: auto !important;
+  cursor: pointer;
+}
+
+.business-website-link:hover {
+  cursor: pointer;
+}
