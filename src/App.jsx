@@ -4,8 +4,9 @@ const businesses = [
   {
     name: "North Splash ProClean",
     category: "Commercial Cleaning",
+    short: "Commercial cleaning",
     description:
-      "Professional commercial cleaning solutions designed to keep businesses polished, healthy, and ready for business.",
+      "Professional commercial cleaning solutions for businesses, facilities, and properties.",
     domain: "NSProClean.com",
     url: "https://nsproclean.com",
     initials: "PC",
@@ -13,8 +14,9 @@ const businesses = [
   {
     name: "North Splash Grounds",
     category: "Landscaping",
+    short: "Landscaping",
     description:
-      "Professional landscaping and exterior grounds services built to create clean, attractive, and well-maintained properties.",
+      "Professional landscaping and grounds services designed to keep properties looking their best.",
     domain: "NSGrounds.com",
     url: "https://nsgrounds.com",
     initials: "NG",
@@ -22,17 +24,19 @@ const businesses = [
   {
     name: "North Splash PropertyCare",
     category: "Property Maintenance",
+    short: "Property maintenance",
     description:
-      "Reliable property maintenance solutions for keeping residential and commercial properties operating at their best.",
+      "Reliable property maintenance solutions for residential and commercial properties.",
     domain: "NSPropertyCare.com",
     url: "https://nspropertycare.com",
-    initials: "PC",
+    initials: "PP",
   },
   {
     name: "NS Social Club",
     category: "Bowling & Entertainment",
+    short: "Entertainment",
     description:
-      "A social entertainment destination bringing bowling, recreation, events, food, and community together.",
+      "A social entertainment destination bringing recreation, bowling, events, and community together.",
     domain: "NSSocialClub.com",
     url: "https://nssocialclub.com",
     initials: "SC",
@@ -40,8 +44,9 @@ const businesses = [
   {
     name: "North Splash Renew",
     category: "Pressure Washing",
+    short: "Exterior renewal",
     description:
-      "Exterior cleaning and pressure washing services that restore curb appeal and bring properties back to life.",
+      "Professional pressure washing and exterior cleaning designed to restore curb appeal.",
     domain: "NSRenew.com",
     url: "https://nsrenew.com",
     initials: "NR",
@@ -49,8 +54,9 @@ const businesses = [
   {
     name: "North Splash ClearOut",
     category: "Junk Removal",
+    short: "Junk removal",
     description:
-      "Straightforward junk removal and property cleanout services for homes, businesses, moves, and renovations.",
+      "Property cleanouts and junk removal for homes, businesses, renovations, and moves.",
     domain: "NSClearOut.com",
     url: "https://nsclearout.com",
     initials: "CO",
@@ -58,8 +64,9 @@ const businesses = [
   {
     name: "NS Dynasty",
     category: "Apartments",
+    short: "Residential living",
     description:
-      "Residential communities designed around comfort, convenience, quality, and long-term living.",
+      "Residential communities focused on comfort, convenience, quality, and modern living.",
     domain: "NSDynasty.com",
     url: "https://nsdynasty.com",
     initials: "ND",
@@ -67,8 +74,9 @@ const businesses = [
   {
     name: "Riche Et Beau",
     category: "Women's Clothing",
+    short: "Women's fashion",
     description:
-      "A women's fashion brand centered around refined style, confidence, beauty, and elevated everyday fashion.",
+      "An elevated women's fashion brand focused on style, confidence, and individuality.",
     domain: "RicheEtBeau.com",
     url: "https://richeetbeau.com",
     initials: "RB",
@@ -76,8 +84,9 @@ const businesses = [
   {
     name: "North Splash Auto Luxe",
     category: "Mobile Detailing",
+    short: "Mobile detailing",
     description:
-      "Premium mobile automotive detailing brought directly to the customer's location.",
+      "Premium mobile automotive detailing brought directly to customers.",
     domain: "NSAutoLuxe.com",
     url: "https://nsautoluxe.com",
     initials: "AL",
@@ -85,25 +94,44 @@ const businesses = [
   {
     name: "NS Venture Works",
     category: "Business Essentials",
+    short: "Business essentials",
     description:
-      "Business essentials and professional services helping entrepreneurs build, launch, brand, and grow.",
+      "Business essentials and professional services helping entrepreneurs build and grow.",
     domain: "NSVentureWorks.com",
     url: "https://nsventureworks.com",
     initials: "VW",
   },
 ];
 
-function Logo({ compact = false }) {
+const pageData = {
+  home: {
+    title: "Home",
+  },
+  businesses: {
+    title: "Businesses",
+  },
+  about: {
+    title: "About",
+  },
+  network: {
+    title: "Our Network",
+  },
+  contact: {
+    title: "Contact",
+  },
+};
+
+function Logo({ footer = false }) {
   return (
-    <div className={`logo ${compact ? "logo-compact" : ""}`}>
-      <div className="logo-mark">
+    <div className={`logo ${footer ? "footer-logo" : ""}`}>
+      <div className="logo-icon">
         <span>N</span>
         <span>S</span>
       </div>
 
-      <div className="logo-text">
+      <div className="logo-name">
         <strong>NORTH SPLASH</strong>
-        {!compact && <small>ENTERPRISES</small>}
+        <small>ENTERPRISES</small>
       </div>
     </div>
   );
@@ -111,8 +139,8 @@ function Logo({ compact = false }) {
 
 function App() {
   const [activePage, setActivePage] = useState("home");
-  const [mobileMenu, setMobileMenu] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [category, setCategory] = useState("All");
 
   const categories = [
     "All",
@@ -120,119 +148,108 @@ function App() {
   ];
 
   const filteredBusinesses =
-    selectedCategory === "All"
+    category === "All"
       ? businesses
-      : businesses.filter(
-          (business) => business.category === selectedCategory
-        );
+      : businesses.filter((business) => business.category === category);
 
   const navigate = (page) => {
     setActivePage(page);
-    setMobileMenu(false);
+    setMenuOpen(false);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const handleSubmit = (event) => {
+  const submitContact = (event) => {
     event.preventDefault();
+
     alert(
-      "Thank you for contacting North Splash. Your message has been received."
+      "Thank you for contacting North Splash. Your message has been submitted."
     );
   };
 
   return (
     <div className="site">
+
+      {/* HEADER */}
+
       <header className="header">
+
         <button
           className="brand-button"
           onClick={() => navigate("home")}
-          aria-label="North Splash home"
+          aria-label="North Splash Home"
         >
-          <Logo compact />
+          <Logo />
         </button>
 
         <button
-          className="mobile-toggle"
-          onClick={() => setMobileMenu(!mobileMenu)}
-          aria-label="Toggle navigation"
+          className="mobile-menu-button"
+          onClick={() => setMenuOpen(!menuOpen)}
+          aria-label="Open navigation"
         >
-          <span></span>
-          <span></span>
-          <span></span>
+          <span />
+          <span />
+          <span />
         </button>
 
-        <nav className={`nav ${mobileMenu ? "nav-open" : ""}`}>
-          <button
-            className={activePage === "home" ? "nav-link active" : "nav-link"}
-            onClick={() => navigate("home")}
-          >
-            Home
-          </button>
+        <nav className={`navigation ${menuOpen ? "navigation-open" : ""}`}>
 
-          <button
-            className={
-              activePage === "businesses" ? "nav-link active" : "nav-link"
-            }
-            onClick={() => navigate("businesses")}
-          >
-            Businesses
-          </button>
+          {Object.keys(pageData).map((page) => (
+            <button
+              key={page}
+              className={
+                activePage === page
+                  ? "navigation-link active"
+                  : "navigation-link"
+              }
+              onClick={() => navigate(page)}
+            >
+              {pageData[page].title}
+            </button>
+          ))}
 
-          <button
-            className={activePage === "about" ? "nav-link active" : "nav-link"}
-            onClick={() => navigate("about")}
-          >
-            About
-          </button>
-
-          <button
-            className={
-              activePage === "network" ? "nav-link active" : "nav-link"
-            }
-            onClick={() => navigate("network")}
-          >
-            Our Network
-          </button>
-
-          <button
-            className={
-              activePage === "contact" ? "nav-link active" : "nav-link"
-            }
-            onClick={() => navigate("contact")}
-          >
-            Contact
-          </button>
         </nav>
 
         <button
-          className="header-cta"
+          className="nav-cta"
           onClick={() => navigate("businesses")}
         >
           Explore North Splash
+          <span>↗</span>
         </button>
+
       </header>
 
       <main>
+
+        {/* HOME */}
+
         {activePage === "home" && (
-          <section className="page home-page">
-            <div className="hero">
+          <div className="home-page">
+
+            <section className="hero">
+
               <div className="hero-content">
-                <div className="eyebrow">ONE COMPANY. MANY POSSIBILITIES.</div>
+
+                <div className="hero-label">
+                  NORTH SPLASH ENTERPRISES
+                </div>
 
                 <h1>
-                  Building businesses
+                  One vision.
                   <br />
-                  <em>under one umbrella.</em>
+                  <span>Many businesses.</span>
                 </h1>
 
                 <p>
-                  North Splash is a growing family of businesses spanning
-                  commercial services, property, entertainment, automotive,
-                  fashion, and business solutions.
+                  North Splash is a growing family of companies built across
+                  multiple industries, connected by one vision for growth,
+                  quality, and opportunity.
                 </p>
 
-                <div className="hero-actions">
+                <div className="hero-buttons">
+
                   <button
-                    className="primary-button"
+                    className="green-button"
                     onClick={() => navigate("businesses")}
                   >
                     Explore Our Businesses
@@ -240,123 +257,358 @@ function App() {
                   </button>
 
                   <button
-                    className="secondary-button"
+                    className="outline-button"
                     onClick={() => navigate("about")}
                   >
                     Discover North Splash
                   </button>
-                </div>
-              </div>
 
-              <div className="hero-visual">
-                <div className="umbrella-symbol">
-                  <div className="umbrella-top">
-                    <span></span>
-                    <span></span>
-                    <span></span>
+                </div>
+
+                <div className="hero-metrics">
+
+                  <div>
+                    <strong>10</strong>
+                    <span>Businesses</span>
                   </div>
-                  <div className="umbrella-handle"></div>
+
+                  <div>
+                    <strong>01</strong>
+                    <span>Umbrella</span>
+                  </div>
+
+                  <div>
+                    <strong>∞</strong>
+                    <span>Possibilities</span>
+                  </div>
+
                 </div>
 
-                <div className="hero-ring ring-one"></div>
-                <div className="hero-ring ring-two"></div>
+              </div>
 
-                <div className="hero-stat">
-                  <strong>10</strong>
-                  <span>BRANDS &amp; COUNTING</span>
+              <div className="hero-art">
+
+                <div className="green-orbit orbit-one" />
+                <div className="green-orbit orbit-two" />
+
+                <div className="umbrella">
+
+                  <div className="umbrella-canopy">
+                    <span />
+                    <span />
+                    <span />
+                    <span />
+                    <span />
+                  </div>
+
+                  <div className="umbrella-pole" />
+
+                  <div className="umbrella-handle" />
+
                 </div>
-              </div>
-            </div>
 
-            <section className="home-intro">
-              <div>
-                <span className="section-label">THE NORTH SPLASH VISION</span>
-                <h2>
-                  Different industries.
-                  <br />
-                  <em>One connected vision.</em>
-                </h2>
+                <div className="hero-art-label">
+                  <span>THE UMBRELLA</span>
+                  <strong>NORTH SPLASH</strong>
+                </div>
+
               </div>
 
-              <p>
-                North Splash brings distinct brands together under one
-                organization. Each business has its own identity, purpose,
-                customers, and future while benefiting from the strength of a
-                larger network.
-              </p>
             </section>
 
-            <section className="home-preview">
-              <div className="preview-header">
+            {/* HOME TEASERS */}
+
+            <section className="teaser-section">
+
+              <div className="section-heading">
+
                 <div>
-                  <span className="section-label">OUR PORTFOLIO</span>
-                  <h2>Explore the family.</h2>
+                  <span className="section-kicker">
+                    EXPLORE NORTH SPLASH
+                  </span>
+
+                  <h2>
+                    Everything starts
+                    <br />
+                    <em>under one roof.</em>
+                  </h2>
                 </div>
 
+                <p>
+                  Get to know the companies, vision, and network behind North
+                  Splash.
+                </p>
+
+              </div>
+
+              <div className="teaser-grid">
+
                 <button
-                  className="text-button"
+                  className="teaser-card teaser-businesses"
                   onClick={() => navigate("businesses")}
                 >
-                  View all businesses →
+
+                  <div className="teaser-top">
+                    <span>01</span>
+                    <span>↗</span>
+                  </div>
+
+                  <div>
+                    <span className="teaser-kicker">
+                      THE PORTFOLIO
+                    </span>
+
+                    <h3>Our Businesses</h3>
+
+                    <p>
+                      Explore all ten North Splash companies and discover what
+                      each brand does.
+                    </p>
+                  </div>
+
+                  <strong className="teaser-link">
+                    View Businesses →
+                  </strong>
+
                 </button>
+
+                <button
+                  className="teaser-card teaser-about"
+                  onClick={() => navigate("about")}
+                >
+
+                  <div className="teaser-top">
+                    <span>02</span>
+                    <span>↗</span>
+                  </div>
+
+                  <div>
+                    <span className="teaser-kicker">
+                      THE COMPANY
+                    </span>
+
+                    <h3>About North Splash</h3>
+
+                    <p>
+                      Learn about the vision behind the umbrella and the
+                      philosophy connecting every company.
+                    </p>
+                  </div>
+
+                  <strong className="teaser-link">
+                    Discover More →
+                  </strong>
+
+                </button>
+
+                <button
+                  className="teaser-card teaser-network"
+                  onClick={() => navigate("network")}
+                >
+
+                  <div className="teaser-top">
+                    <span>03</span>
+                    <span>↗</span>
+                  </div>
+
+                  <div>
+                    <span className="teaser-kicker">
+                      THE CONNECTION
+                    </span>
+
+                    <h3>Our Network</h3>
+
+                    <p>
+                      See how the North Splash companies connect beneath one
+                      growing corporate umbrella.
+                    </p>
+                  </div>
+
+                  <strong className="teaser-link">
+                    Explore Network →
+                  </strong>
+
+                </button>
+
+                <button
+                  className="teaser-card teaser-contact"
+                  onClick={() => navigate("contact")}
+                >
+
+                  <div className="teaser-top">
+                    <span>04</span>
+                    <span>↗</span>
+                  </div>
+
+                  <div>
+                    <span className="teaser-kicker">
+                      START A CONVERSATION
+                    </span>
+
+                    <h3>Contact Us</h3>
+
+                    <p>
+                      Have a business opportunity, partnership idea, or
+                      question? Let's connect.
+                    </p>
+                  </div>
+
+                  <strong className="teaser-link">
+                    Get In Touch →
+                  </strong>
+
+                </button>
+
               </div>
 
-              <div className="mini-grid">
-                {businesses.slice(0, 4).map((business) => (
+            </section>
+
+            {/* FEATURED BUSINESSES */}
+
+            <section className="featured-section">
+
+              <div className="featured-heading">
+
+                <div>
+                  <span className="section-kicker">
+                    A GROWING PORTFOLIO
+                  </span>
+
+                  <h2>
+                    Meet the
+                    <br />
+                    <em>North Splash family.</em>
+                  </h2>
+                </div>
+
+                <button
+                  className="text-link"
+                  onClick={() => navigate("businesses")}
+                >
+                  View all 10 businesses →
+                </button>
+
+              </div>
+
+              <div className="featured-grid">
+
+                {businesses.slice(0, 6).map((business, index) => (
                   <button
-                    className="mini-card"
                     key={business.name}
+                    className="featured-card"
                     onClick={() => navigate("businesses")}
                   >
-                    <div className="mini-logo">{business.initials}</div>
-                    <span>{business.category}</span>
+
+                    <span className="featured-number">
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+
+                    <div className="featured-logo">
+                      {business.initials}
+                    </div>
+
+                    <span className="featured-category">
+                      {business.category}
+                    </span>
+
                     <strong>{business.name}</strong>
+
+                    <span className="featured-arrow">↗</span>
+
                   </button>
                 ))}
+
               </div>
+
             </section>
-          </section>
+
+            {/* HOME CTA */}
+
+            <section className="home-cta">
+
+              <div>
+
+                <span className="section-kicker">
+                  THE NEXT CHAPTER
+                </span>
+
+                <h2>
+                  There is more
+                  <br />
+                  <em>under the umbrella.</em>
+                </h2>
+
+              </div>
+
+              <button
+                className="green-button large"
+                onClick={() => navigate("contact")}
+              >
+                Connect With North Splash
+                <span>↗</span>
+              </button>
+
+            </section>
+
+          </div>
         )}
 
+        {/* BUSINESSES */}
+
         {activePage === "businesses" && (
-          <section className="page inner-page">
+          <section className="inner-page">
+
             <div className="page-heading">
-              <span className="section-label">THE PORTFOLIO</span>
+
+              <span className="section-kicker">
+                THE PORTFOLIO
+              </span>
+
               <h1>
-                Our <em>businesses.</em>
+                Our
+                <br />
+                <em>Businesses.</em>
               </h1>
+
               <p>
-                Explore the companies that make up the North Splash family.
-                Each brand serves a different market while sharing the same
-                commitment to quality, growth, and innovation.
+                Ten distinct businesses. Multiple industries. One growing
+                North Splash network.
               </p>
+
             </div>
 
-            <div className="category-bar">
-              {categories.map((category) => (
+            <div className="category-filter">
+
+              {categories.map((item) => (
                 <button
-                  key={category}
-                  className={
-                    selectedCategory === category ? "category active" : "category"
-                  }
-                  onClick={() => setSelectedCategory(category)}
+                  key={item}
+                  className={category === item ? "filter active" : "filter"}
+                  onClick={() => setCategory(item)}
                 >
-                  {category}
+                  {item}
                 </button>
               ))}
+
             </div>
 
             <div className="business-grid">
+
               {filteredBusinesses.map((business, index) => (
-                <article className="business-card" key={business.name}>
-                  <div className="business-card-top">
-                    <span className="business-number">
+                <article
+                  className="business-card"
+                  key={business.name}
+                >
+
+                  <div className="business-top">
+
+                    <span className="business-index">
                       {String(index + 1).padStart(2, "0")}
                     </span>
 
                     <div className="business-logo">
                       {business.initials}
                     </div>
+
                   </div>
 
                   <span className="business-category">
@@ -367,217 +619,282 @@ function App() {
 
                   <p>{business.description}</p>
 
-                  <div className="business-card-bottom">
+                  <div className="business-footer">
+
                     <span>{business.domain}</span>
 
                     <a
                       href={business.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="visit-link"
                     >
-                      Visit Brand ↗
+                      Visit Website ↗
                     </a>
+
                   </div>
+
                 </article>
               ))}
+
             </div>
+
           </section>
         )}
 
+        {/* ABOUT */}
+
         {activePage === "about" && (
-          <section className="page inner-page about-page">
+          <section className="inner-page">
+
             <div className="page-heading">
-              <span className="section-label">ABOUT NORTH SPLASH</span>
+
+              <span className="section-kicker">
+                ABOUT NORTH SPLASH
+              </span>
+
               <h1>
-                More than a brand.
+                Built to
                 <br />
-                <em>A business ecosystem.</em>
+                <em>build.</em>
               </h1>
+
               <p>
-                North Splash is designed as an umbrella organization for a
-                growing collection of independent businesses.
+                North Splash is the umbrella organization connecting a
+                growing collection of businesses across different industries.
               </p>
+
             </div>
 
-            <div className="about-layout">
-              <div className="about-large">
-                <span>01</span>
+            <div className="about-feature">
+
+              <div className="about-number">
+                01
+              </div>
+
+              <div>
+                <span className="section-kicker">
+                  THE VISION
+                </span>
+
                 <h2>
-                  Build.
+                  Different businesses.
                   <br />
-                  Connect.
-                  <br />
-                  Grow.
+                  <em>Shared direction.</em>
                 </h2>
+
+                <p>
+                  North Splash was created around a simple idea: businesses do
+                  not have to operate in isolation. By bringing different
+                  brands together under one umbrella, each company can maintain
+                  its own identity while becoming part of something larger.
+                </p>
+
+                <p>
+                  Our portfolio spans commercial services, property,
+                  entertainment, fashion, automotive services, and business
+                  solutions.
+                </p>
+
               </div>
 
-              <div className="about-copy">
-                <h3>Our approach</h3>
-
-                <p>
-                  We believe businesses can be stronger when they are part of
-                  something bigger. North Splash creates a foundation where
-                  individual companies can develop their own identities while
-                  benefiting from shared vision and opportunity.
-                </p>
-
-                <p>
-                  From property services and commercial cleaning to fashion,
-                  entertainment, automotive services, and business essentials,
-                  our portfolio is intentionally diverse.
-                </p>
-
-                <p>
-                  The goal is simple: create businesses that can stand on their
-                  own while building a network that becomes stronger together.
-                </p>
-              </div>
             </div>
 
             <div className="values-grid">
+
               <div>
                 <span>01</span>
-                <h3>Entrepreneurship</h3>
+                <h3>Build</h3>
                 <p>
-                  Creating opportunities and turning ideas into real
-                  businesses.
+                  Turn ideas into businesses with real purpose and potential.
                 </p>
               </div>
 
               <div>
                 <span>02</span>
-                <h3>Quality</h3>
+                <h3>Connect</h3>
                 <p>
-                  Building brands that customers can recognize and trust.
+                  Create relationships between companies, customers, and
+                  communities.
                 </p>
               </div>
 
               <div>
                 <span>03</span>
-                <h3>Growth</h3>
+                <h3>Grow</h3>
                 <p>
-                  Continuously expanding our capabilities, markets, and
-                  portfolio.
+                  Continue expanding into new markets and opportunities.
                 </p>
               </div>
 
               <div>
                 <span>04</span>
-                <h3>Connection</h3>
+                <h3>Elevate</h3>
                 <p>
-                  Creating a network where individual businesses can benefit
-                  from shared opportunity.
+                  Build brands that look, operate, and feel professional.
                 </p>
               </div>
+
             </div>
+
           </section>
         )}
 
+        {/* NETWORK */}
+
         {activePage === "network" && (
-          <section className="page inner-page network-page">
+          <section className="inner-page">
+
             <div className="page-heading">
-              <span className="section-label">THE NETWORK</span>
+
+              <span className="section-kicker">
+                OUR NETWORK
+              </span>
+
               <h1>
-                One umbrella.
+                One
                 <br />
-                <em>Multiple industries.</em>
+                <em>umbrella.</em>
               </h1>
+
               <p>
-                North Splash connects businesses across several industries,
-                creating a diverse portfolio built for long-term growth.
+                Every North Splash company serves its own market while
+                contributing to a larger ecosystem of businesses.
               </p>
+
             </div>
 
-            <div className="network-visual">
-              <div className="network-center">
-                <div className="network-center-logo">NS</div>
+            <div className="network">
+
+              <div className="network-core">
+                <div className="network-core-logo">
+                  NS
+                </div>
+
                 <strong>NORTH SPLASH</strong>
-                <span>THE UMBRELLA</span>
+
+                <span>ENTERPRISES</span>
               </div>
 
-              {businesses.map((business, index) => {
-                const positions = [
-                  "network-one",
-                  "network-two",
-                  "network-three",
-                  "network-four",
-                  "network-five",
-                  "network-six",
-                  "network-seven",
-                  "network-eight",
-                  "network-nine",
-                  "network-ten",
-                ];
+              {businesses.map((business, index) => (
+                <div
+                  key={business.name}
+                  className={`network-business network-position-${index + 1}`}
+                >
 
-                return (
-                  <div
-                    className={`network-node ${positions[index]}`}
-                    key={business.name}
-                  >
-                    <div>{business.initials}</div>
-                    <span>{business.name}</span>
+                  <div>
+                    {business.initials}
                   </div>
-                );
-              })}
+
+                  <span>
+                    {business.name}
+                  </span>
+
+                </div>
+              ))}
+
             </div>
 
-            <div className="network-statement">
-              <span className="section-label">THE BIGGER PICTURE</span>
+            <div className="network-bottom">
+
+              <span className="section-kicker">
+                THE BIGGER PICTURE
+              </span>
+
               <h2>
                 Independent brands.
                 <br />
                 <em>Shared opportunity.</em>
               </h2>
+
               <p>
-                Every North Splash company has room to grow independently,
-                while the larger network creates opportunities for collaboration,
-                shared resources, cross-industry relationships, and future
-                expansion.
+                The North Splash network gives each company room to develop
+                while creating opportunities for collaboration, shared
+                resources, cross-industry relationships, and future growth.
               </p>
+
             </div>
+
           </section>
         )}
 
+        {/* CONTACT */}
+
         {activePage === "contact" && (
-          <section className="page inner-page contact-page">
+          <section className="inner-page">
+
             <div className="page-heading">
-              <span className="section-label">CONTACT NORTH SPLASH</span>
+
+              <span className="section-kicker">
+                CONTACT NORTH SPLASH
+              </span>
+
               <h1>
                 Let's build
                 <br />
                 <em>something bigger.</em>
               </h1>
+
               <p>
-                Interested in North Splash, one of our companies, a business
-                opportunity, or a potential partnership? Start here.
+                Have a question, partnership opportunity, business idea, or
+                general inquiry? Send us a message.
               </p>
+
             </div>
 
             <div className="contact-layout">
-              <div className="contact-info">
-                <div className="contact-block">
-                  <span>GENERAL INQUIRIES</span>
-                  <h3>North Splash</h3>
-                  <p>Business &amp; partnership inquiries</p>
+
+              <div className="contact-details">
+
+                <div className="contact-detail">
+
+                  <span>COMPANY</span>
+
+                  <h3>
+                    North Splash Enterprises
+                  </h3>
+
+                  <p>
+                    The umbrella behind the North Splash business network.
+                  </p>
+
                 </div>
 
-                <div className="contact-block">
+                <div className="contact-detail">
+
                   <span>ONLINE</span>
-                  <p>northsplash.com</p>
+
+                  <p>
+                    northsplash.com
+                  </p>
+
                 </div>
 
-                <div className="contact-block">
+                <div className="contact-detail">
+
                   <span>PORTFOLIO</span>
-                  <p>10 businesses and growing.</p>
+
+                  <p>
+                    10 businesses and growing.
+                  </p>
+
                 </div>
+
               </div>
 
-              <form className="contact-form" onSubmit={handleSubmit}>
+              <form
+                className="contact-form"
+                onSubmit={submitContact}
+              >
+
                 <div className="form-row">
+
                   <label>
                     Name
-                    <input type="text" placeholder="Your name" required />
+                    <input
+                      type="text"
+                      placeholder="Your name"
+                      required
+                    />
                   </label>
 
                   <label>
@@ -588,75 +905,148 @@ function App() {
                       required
                     />
                   </label>
+
                 </div>
 
                 <label>
-                  I'm interested in
-                  <select defaultValue="">
+                  What can we help with?
+
+                  <select defaultValue="" required>
+
                     <option value="" disabled>
                       Select an option
                     </option>
-                    <option>North Splash</option>
-                    {businesses.map((business) => (
-                      <option key={business.name}>{business.name}</option>
-                    ))}
-                    <option>Partnership</option>
-                    <option>Business Opportunity</option>
-                    <option>Other</option>
+
+                    <option>
+                      General Inquiry
+                    </option>
+
+                    <option>
+                      Business Partnership
+                    </option>
+
+                    <option>
+                      Business Opportunity
+                    </option>
+
+                    <option>
+                      North Splash Business
+                    </option>
+
+                    <option>
+                      Other
+                    </option>
+
                   </select>
+
                 </label>
 
                 <label>
                   Message
+
                   <textarea
-                    placeholder="Tell us how we can help..."
                     rows="7"
+                    placeholder="Tell us about your inquiry..."
                     required
-                  ></textarea>
+                  />
+
                 </label>
 
-                <button type="submit" className="primary-button">
-                  Send Message <span>↗</span>
+                <button
+                  className="green-button"
+                  type="submit"
+                >
+                  Send Message
+                  <span>↗</span>
                 </button>
+
               </form>
+
             </div>
+
           </section>
         )}
+
       </main>
 
+      {/* FOOTER */}
+
       <footer className="footer">
-        <div className="footer-top">
+
+        <div className="footer-main">
+
           <div>
-            <Logo />
+
+            <Logo footer />
+
             <p>
               A growing family of businesses
               <br />
               under one umbrella.
             </p>
+
           </div>
 
-          <div className="footer-links">
-            <span>Explore</span>
+          <div className="footer-nav">
+
+            <span>EXPLORE</span>
+
+            <button onClick={() => navigate("home")}>
+              Home
+            </button>
 
             <button onClick={() => navigate("businesses")}>
               Businesses
             </button>
 
-            <button onClick={() => navigate("about")}>About</button>
+            <button onClick={() => navigate("about")}>
+              About
+            </button>
 
             <button onClick={() => navigate("network")}>
               Our Network
             </button>
 
-            <button onClick={() => navigate("contact")}>Contact</button>
+            <button onClick={() => navigate("contact")}>
+              Contact
+            </button>
+
           </div>
+
+          <div className="footer-nav">
+
+            <span>PORTFOLIO</span>
+
+            {businesses.slice(0, 5).map((business) => (
+              <a
+                key={business.name}
+                href={business.url}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {business.name}
+              </a>
+            ))}
+
+          </div>
+
         </div>
 
         <div className="footer-bottom">
-          <span>© {new Date().getFullYear()} North Splash. All rights reserved.</span>
-          <span>northsplash.com</span>
+
+          <span>
+            © {new Date().getFullYear()} North Splash Enterprises.
+            All rights reserved.
+          </span>
+
+          <span>
+            northsplash.com
+          </span>
+
         </div>
+
       </footer>
+
     </div>
   );
 }
