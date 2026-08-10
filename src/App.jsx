@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const businesses = [
   {
@@ -124,7 +124,7 @@ const pageData = {
 function Logo({ footer = false }) {
   return (
     <div className={`logo ${footer ? "footer-logo" : ""}`}>
-      <div className="logo-icon">
+      <div className="logo-mark">
         <span>N</span>
         <span>S</span>
       </div>
@@ -141,6 +141,7 @@ function App() {
   const [activePage, setActivePage] = useState("home");
   const [menuOpen, setMenuOpen] = useState(false);
   const [category, setCategory] = useState("All");
+  const [pageReady, setPageReady] = useState(false);
 
   const categories = [
     "All",
@@ -152,10 +153,52 @@ function App() {
       ? businesses
       : businesses.filter((business) => business.category === category);
 
+  useEffect(() => {
+    const timer = window.setTimeout(() => {
+      setPageReady(true);
+    }, 100);
+
+    return () => window.clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    const revealElements = document.querySelectorAll(".reveal");
+
+    if (!revealElements.length) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      {
+        threshold: 0.12,
+        rootMargin: "0px 0px -60px 0px",
+      }
+    );
+
+    revealElements.forEach((element) => observer.observe(element));
+
+    return () => observer.disconnect();
+  }, [activePage, category]);
+
   const navigate = (page) => {
     setActivePage(page);
     setMenuOpen(false);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    setPageReady(false);
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+
+    window.setTimeout(() => {
+      setPageReady(true);
+    }, 150);
   };
 
   const submitContact = (event) => {
@@ -167,12 +210,14 @@ function App() {
   };
 
   return (
-    <div className="site">
+    <div className={`app ${pageReady ? "page-ready" : ""}`}>
+      <div className="ambient ambient-one" />
+      <div className="ambient ambient-two" />
+      <div className="ambient ambient-three" />
 
       {/* HEADER */}
 
       <header className="header">
-
         <button
           className="brand-button"
           onClick={() => navigate("home")}
@@ -182,17 +227,23 @@ function App() {
         </button>
 
         <button
-          className="mobile-menu-button"
+          className={`mobile-menu-button ${
+            menuOpen ? "mobile-menu-active" : ""
+          }`}
           onClick={() => setMenuOpen(!menuOpen)}
           aria-label="Open navigation"
+          aria-expanded={menuOpen}
         >
           <span />
           <span />
           <span />
         </button>
 
-        <nav className={`navigation ${menuOpen ? "navigation-open" : ""}`}>
-
+        <nav
+          className={`navigation ${
+            menuOpen ? "navigation-open" : ""
+          }`}
+        >
           {Object.keys(pageData).map((page) => (
             <button
               key={page}
@@ -206,7 +257,6 @@ function App() {
               {pageData[page].title}
             </button>
           ))}
-
         </nav>
 
         <button
@@ -216,38 +266,33 @@ function App() {
           Explore North Splash
           <span>↗</span>
         </button>
-
       </header>
 
       <main>
-
         {/* HOME */}
 
         {activePage === "home" && (
-          <div className="home-page">
-
+          <div className="home-page page-transition">
             <section className="hero">
-
               <div className="hero-content">
-
-                <div className="hero-label">
+                <div className="hero-label reveal">
+                  <span className="label-line" />
                   NORTH SPLASH ENTERPRISES
                 </div>
 
-                <h1>
+                <h1 className="hero-title reveal reveal-delay-1">
                   One vision.
                   <br />
                   <span>Many businesses.</span>
                 </h1>
 
-                <p>
-                  North Splash is a growing family of companies built across
-                  multiple industries, connected by one vision for growth,
-                  quality, and opportunity.
+                <p className="hero-description reveal reveal-delay-2">
+                  North Splash is a growing family of companies built
+                  across multiple industries, connected by one vision for
+                  growth, quality, and opportunity.
                 </p>
 
-                <div className="hero-buttons">
-
+                <div className="hero-buttons reveal reveal-delay-3">
                   <button
                     className="green-button"
                     onClick={() => navigate("businesses")}
@@ -262,11 +307,9 @@ function App() {
                   >
                     Discover North Splash
                   </button>
-
                 </div>
 
-                <div className="hero-metrics">
-
+                <div className="hero-metrics reveal reveal-delay-4">
                   <div>
                     <strong>10</strong>
                     <span>Businesses</span>
@@ -281,18 +324,21 @@ function App() {
                     <strong>∞</strong>
                     <span>Possibilities</span>
                   </div>
-
                 </div>
-
               </div>
 
-              <div className="hero-art">
+              <div className="hero-art reveal reveal-delay-2">
+                <div className="hero-glow" />
 
                 <div className="green-orbit orbit-one" />
                 <div className="green-orbit orbit-two" />
+                <div className="green-orbit orbit-three" />
+
+                <div className="orbit-dot dot-one" />
+                <div className="orbit-dot dot-two" />
+                <div className="orbit-dot dot-three" />
 
                 <div className="umbrella">
-
                   <div className="umbrella-canopy">
                     <span />
                     <span />
@@ -304,24 +350,19 @@ function App() {
                   <div className="umbrella-pole" />
 
                   <div className="umbrella-handle" />
-
                 </div>
 
                 <div className="hero-art-label">
                   <span>THE UMBRELLA</span>
                   <strong>NORTH SPLASH</strong>
                 </div>
-
               </div>
-
             </section>
 
             {/* HOME TEASERS */}
 
             <section className="teaser-section">
-
-              <div className="section-heading">
-
+              <div className="section-heading reveal">
                 <div>
                   <span className="section-kicker">
                     EXPLORE NORTH SPLASH
@@ -335,19 +376,16 @@ function App() {
                 </div>
 
                 <p>
-                  Get to know the companies, vision, and network behind North
-                  Splash.
+                  Get to know the companies, vision, and network behind
+                  North Splash.
                 </p>
-
               </div>
 
               <div className="teaser-grid">
-
                 <button
-                  className="teaser-card teaser-businesses"
+                  className="teaser-card teaser-businesses reveal"
                   onClick={() => navigate("businesses")}
                 >
-
                   <div className="teaser-top">
                     <span>01</span>
                     <span>↗</span>
@@ -361,22 +399,20 @@ function App() {
                     <h3>Our Businesses</h3>
 
                     <p>
-                      Explore all ten North Splash companies and discover what
-                      each brand does.
+                      Explore all ten North Splash companies and
+                      discover what each brand does.
                     </p>
                   </div>
 
                   <strong className="teaser-link">
                     View Businesses →
                   </strong>
-
                 </button>
 
                 <button
-                  className="teaser-card teaser-about"
+                  className="teaser-card teaser-about reveal reveal-delay-1"
                   onClick={() => navigate("about")}
                 >
-
                   <div className="teaser-top">
                     <span>02</span>
                     <span>↗</span>
@@ -390,22 +426,20 @@ function App() {
                     <h3>About North Splash</h3>
 
                     <p>
-                      Learn about the vision behind the umbrella and the
-                      philosophy connecting every company.
+                      Learn about the vision behind the umbrella and
+                      the philosophy connecting every company.
                     </p>
                   </div>
 
                   <strong className="teaser-link">
                     Discover More →
                   </strong>
-
                 </button>
 
                 <button
-                  className="teaser-card teaser-network"
+                  className="teaser-card teaser-network reveal reveal-delay-2"
                   onClick={() => navigate("network")}
                 >
-
                   <div className="teaser-top">
                     <span>03</span>
                     <span>↗</span>
@@ -419,22 +453,20 @@ function App() {
                     <h3>Our Network</h3>
 
                     <p>
-                      See how the North Splash companies connect beneath one
-                      growing corporate umbrella.
+                      See how the North Splash companies connect
+                      beneath one growing corporate umbrella.
                     </p>
                   </div>
 
                   <strong className="teaser-link">
                     Explore Network →
                   </strong>
-
                 </button>
 
                 <button
-                  className="teaser-card teaser-contact"
+                  className="teaser-card teaser-contact reveal reveal-delay-3"
                   onClick={() => navigate("contact")}
                 >
-
                   <div className="teaser-top">
                     <span>04</span>
                     <span>↗</span>
@@ -448,27 +480,22 @@ function App() {
                     <h3>Contact Us</h3>
 
                     <p>
-                      Have a business opportunity, partnership idea, or
-                      question? Let's connect.
+                      Have a business opportunity, partnership idea,
+                      or question? Let's connect.
                     </p>
                   </div>
 
                   <strong className="teaser-link">
                     Get In Touch →
                   </strong>
-
                 </button>
-
               </div>
-
             </section>
 
             {/* FEATURED BUSINESSES */}
 
             <section className="featured-section">
-
-              <div className="featured-heading">
-
+              <div className="featured-heading reveal">
                 <div>
                   <span className="section-kicker">
                     A GROWING PORTFOLIO
@@ -487,18 +514,18 @@ function App() {
                 >
                   View all 10 businesses →
                 </button>
-
               </div>
 
               <div className="featured-grid">
-
                 {businesses.slice(0, 6).map((business, index) => (
                   <button
                     key={business.name}
-                    className="featured-card"
+                    className="featured-card reveal"
+                    style={{
+                      "--card-delay": `${index * 70}ms`,
+                    }}
                     onClick={() => navigate("businesses")}
                   >
-
                     <span className="featured-number">
                       {String(index + 1).padStart(2, "0")}
                     </span>
@@ -514,20 +541,15 @@ function App() {
                     <strong>{business.name}</strong>
 
                     <span className="featured-arrow">↗</span>
-
                   </button>
                 ))}
-
               </div>
-
             </section>
 
             {/* HOME CTA */}
 
-            <section className="home-cta">
-
+            <section className="home-cta reveal">
               <div>
-
                 <span className="section-kicker">
                   THE NEXT CHAPTER
                 </span>
@@ -537,7 +559,6 @@ function App() {
                   <br />
                   <em>under the umbrella.</em>
                 </h2>
-
               </div>
 
               <button
@@ -547,19 +568,15 @@ function App() {
                 Connect With North Splash
                 <span>↗</span>
               </button>
-
             </section>
-
           </div>
         )}
 
         {/* BUSINESSES */}
 
         {activePage === "businesses" && (
-          <section className="inner-page">
-
-            <div className="page-heading">
-
+          <section className="inner-page page-transition">
+            <div className="page-heading reveal">
               <span className="section-kicker">
                 THE PORTFOLIO
               </span>
@@ -571,36 +588,37 @@ function App() {
               </h1>
 
               <p>
-                Ten distinct businesses. Multiple industries. One growing
-                North Splash network.
+                Ten distinct businesses. Multiple industries. One
+                growing North Splash network.
               </p>
-
             </div>
 
-            <div className="category-filter">
-
+            <div className="category-filter reveal">
               {categories.map((item) => (
                 <button
                   key={item}
-                  className={category === item ? "filter active" : "filter"}
+                  className={
+                    category === item
+                      ? "filter active"
+                      : "filter"
+                  }
                   onClick={() => setCategory(item)}
                 >
                   {item}
                 </button>
               ))}
-
             </div>
 
             <div className="business-grid">
-
               {filteredBusinesses.map((business, index) => (
                 <article
-                  className="business-card"
+                  className="business-card reveal"
+                  style={{
+                    "--card-delay": `${index * 55}ms`,
+                  }}
                   key={business.name}
                 >
-
                   <div className="business-top">
-
                     <span className="business-index">
                       {String(index + 1).padStart(2, "0")}
                     </span>
@@ -608,7 +626,6 @@ function App() {
                     <div className="business-logo">
                       {business.initials}
                     </div>
-
                   </div>
 
                   <span className="business-category">
@@ -620,7 +637,6 @@ function App() {
                   <p>{business.description}</p>
 
                   <div className="business-footer">
-
                     <span>{business.domain}</span>
 
                     <a
@@ -630,24 +646,18 @@ function App() {
                     >
                       Visit Website ↗
                     </a>
-
                   </div>
-
                 </article>
               ))}
-
             </div>
-
           </section>
         )}
 
         {/* ABOUT */}
 
         {activePage === "about" && (
-          <section className="inner-page">
-
-            <div className="page-heading">
-
+          <section className="inner-page page-transition">
+            <div className="page-heading reveal">
               <span className="section-kicker">
                 ABOUT NORTH SPLASH
               </span>
@@ -659,17 +669,14 @@ function App() {
               </h1>
 
               <p>
-                North Splash is the umbrella organization connecting a
-                growing collection of businesses across different industries.
+                North Splash is the umbrella organization connecting
+                a growing collection of businesses across different
+                industries.
               </p>
-
             </div>
 
-            <div className="about-feature">
-
-              <div className="about-number">
-                01
-              </div>
+            <div className="about-feature reveal">
+              <div className="about-number">01</div>
 
               <div>
                 <span className="section-kicker">
@@ -683,69 +690,66 @@ function App() {
                 </h2>
 
                 <p>
-                  North Splash was created around a simple idea: businesses do
-                  not have to operate in isolation. By bringing different
-                  brands together under one umbrella, each company can maintain
-                  its own identity while becoming part of something larger.
+                  North Splash was created around a simple idea:
+                  businesses do not have to operate in isolation. By
+                  bringing different brands together under one
+                  umbrella, each company can maintain its own identity
+                  while becoming part of something larger.
                 </p>
 
                 <p>
                   Our portfolio spans commercial services, property,
-                  entertainment, fashion, automotive services, and business
-                  solutions.
+                  entertainment, fashion, automotive services, and
+                  business solutions.
                 </p>
-
               </div>
-
             </div>
 
             <div className="values-grid">
-
-              <div>
+              <div className="reveal">
                 <span>01</span>
                 <h3>Build</h3>
                 <p>
-                  Turn ideas into businesses with real purpose and potential.
+                  Turn ideas into businesses with real purpose and
+                  potential.
                 </p>
               </div>
 
-              <div>
+              <div className="reveal reveal-delay-1">
                 <span>02</span>
                 <h3>Connect</h3>
                 <p>
-                  Create relationships between companies, customers, and
-                  communities.
+                  Create relationships between companies, customers,
+                  and communities.
                 </p>
               </div>
 
-              <div>
+              <div className="reveal reveal-delay-2">
                 <span>03</span>
                 <h3>Grow</h3>
                 <p>
-                  Continue expanding into new markets and opportunities.
+                  Continue expanding into new markets and
+                  opportunities.
                 </p>
               </div>
 
-              <div>
+              <div className="reveal reveal-delay-3">
                 <span>04</span>
                 <h3>Elevate</h3>
                 <p>
-                  Build brands that look, operate, and feel professional.
+                  Build brands that look, operate, and feel
+                  professional.
                 </p>
               </div>
-
             </div>
-
           </section>
         )}
 
         {/* NETWORK */}
 
         {activePage === "network" && (
-          <section className="inner-page">
-
-            <div className="page-heading">
-
+          <section className="inner-page page-transition">
+            <div className="page-heading reveal">
               <span className="section-kicker">
                 OUR NETWORK
               </span>
@@ -760,14 +764,21 @@ function App() {
                 Every North Splash company serves its own market while
                 contributing to a larger ecosystem of businesses.
               </p>
-
             </div>
 
-            <div className="network">
+            <div className="network reveal">
+              <div className="network-lines">
+                {businesses.map((business, index) => (
+                  <span
+                    key={`line-${business.name}`}
+                    className={`network-line network-line-${index + 1}`}
+                  />
+                ))}
+              </div>
 
               <div className="network-core">
-                <div className="network-core-logo">
-                  NS
+                <div className="network-core-ring">
+                  <div className="network-core-logo">NS</div>
                 </div>
 
                 <strong>NORTH SPLASH</strong>
@@ -778,24 +789,18 @@ function App() {
               {businesses.map((business, index) => (
                 <div
                   key={business.name}
-                  className={`network-business network-position-${index + 1}`}
+                  className={`network-business network-position-${
+                    index + 1
+                  }`}
                 >
+                  <div>{business.initials}</div>
 
-                  <div>
-                    {business.initials}
-                  </div>
-
-                  <span>
-                    {business.name}
-                  </span>
-
+                  <span>{business.name}</span>
                 </div>
               ))}
-
             </div>
 
-            <div className="network-bottom">
-
+            <div className="network-bottom reveal">
               <span className="section-kicker">
                 THE BIGGER PICTURE
               </span>
@@ -807,23 +812,20 @@ function App() {
               </h2>
 
               <p>
-                The North Splash network gives each company room to develop
-                while creating opportunities for collaboration, shared
-                resources, cross-industry relationships, and future growth.
+                The North Splash network gives each company room to
+                develop while creating opportunities for
+                collaboration, shared resources, cross-industry
+                relationships, and future growth.
               </p>
-
             </div>
-
           </section>
         )}
 
         {/* CONTACT */}
 
         {activePage === "contact" && (
-          <section className="inner-page">
-
-            <div className="page-heading">
-
+          <section className="inner-page page-transition">
+            <div className="page-heading reveal">
               <span className="section-kicker">
                 CONTACT NORTH SPLASH
               </span>
@@ -835,59 +837,42 @@ function App() {
               </h1>
 
               <p>
-                Have a question, partnership opportunity, business idea, or
-                general inquiry? Send us a message.
+                Have a question, partnership opportunity, business
+                idea, or general inquiry? Send us a message.
               </p>
-
             </div>
 
             <div className="contact-layout">
-
               <div className="contact-details">
-
-                <div className="contact-detail">
-
+                <div className="contact-detail reveal">
                   <span>COMPANY</span>
 
-                  <h3>
-                    North Splash Enterprises
-                  </h3>
+                  <h3>North Splash Enterprises</h3>
 
                   <p>
-                    The umbrella behind the North Splash business network.
+                    The umbrella behind the North Splash business
+                    network.
                   </p>
-
                 </div>
 
-                <div className="contact-detail">
-
+                <div className="contact-detail reveal reveal-delay-1">
                   <span>ONLINE</span>
 
-                  <p>
-                    northsplash.com
-                  </p>
-
+                  <p>northsplash.com</p>
                 </div>
 
-                <div className="contact-detail">
-
+                <div className="contact-detail reveal reveal-delay-2">
                   <span>PORTFOLIO</span>
 
-                  <p>
-                    10 businesses and growing.
-                  </p>
-
+                  <p>10 businesses and growing.</p>
                 </div>
-
               </div>
 
               <form
-                className="contact-form"
+                className="contact-form reveal"
                 onSubmit={submitContact}
               >
-
                 <div className="form-row">
-
                   <label>
                     Name
                     <input
@@ -905,40 +890,22 @@ function App() {
                       required
                     />
                   </label>
-
                 </div>
 
                 <label>
                   What can we help with?
 
                   <select defaultValue="" required>
-
                     <option value="" disabled>
                       Select an option
                     </option>
 
-                    <option>
-                      General Inquiry
-                    </option>
-
-                    <option>
-                      Business Partnership
-                    </option>
-
-                    <option>
-                      Business Opportunity
-                    </option>
-
-                    <option>
-                      North Splash Business
-                    </option>
-
-                    <option>
-                      Other
-                    </option>
-
+                    <option>General Inquiry</option>
+                    <option>Business Partnership</option>
+                    <option>Business Opportunity</option>
+                    <option>North Splash Business</option>
+                    <option>Other</option>
                   </select>
-
                 </label>
 
                 <label>
@@ -949,7 +916,6 @@ function App() {
                     placeholder="Tell us about your inquiry..."
                     required
                   />
-
                 </label>
 
                 <button
@@ -959,24 +925,17 @@ function App() {
                   Send Message
                   <span>↗</span>
                 </button>
-
               </form>
-
             </div>
-
           </section>
         )}
-
       </main>
 
       {/* FOOTER */}
 
       <footer className="footer">
-
         <div className="footer-main">
-
           <div>
-
             <Logo footer />
 
             <p>
@@ -984,11 +943,9 @@ function App() {
               <br />
               under one umbrella.
             </p>
-
           </div>
 
           <div className="footer-nav">
-
             <span>EXPLORE</span>
 
             <button onClick={() => navigate("home")}>
@@ -1010,11 +967,9 @@ function App() {
             <button onClick={() => navigate("contact")}>
               Contact
             </button>
-
           </div>
 
           <div className="footer-nav">
-
             <span>PORTFOLIO</span>
 
             {businesses.slice(0, 5).map((business) => (
@@ -1027,26 +982,18 @@ function App() {
                 {business.name}
               </a>
             ))}
-
           </div>
-
         </div>
 
         <div className="footer-bottom">
-
           <span>
             © {new Date().getFullYear()} North Splash Enterprises.
             All rights reserved.
           </span>
 
-          <span>
-            northsplash.com
-          </span>
-
+          <span>northsplash.com</span>
         </div>
-
       </footer>
-
     </div>
   );
 }
