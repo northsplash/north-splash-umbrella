@@ -77,8 +77,8 @@ const businesses = [
     short: "Women's fashion",
     description:
       "An elevated women's fashion brand focused on style, confidence, and individuality.",
-    domain: "RicheEtBeau.com",
-    url: "https://richeetbeau.com",
+    domain: "riche-et-beau-site.vercel.app",
+    url: "https://riche-et-beau-site.vercel.app/",
     initials: "RB",
   },
   {
@@ -87,8 +87,8 @@ const businesses = [
     short: "Mobile detailing",
     description:
       "Premium mobile automotive detailing brought directly to customers.",
-    domain: "NSAutoLuxe.com",
-    url: "https://nsautoluxe.com",
+    domain: "northsplash.com",
+    url: "https://northsplash.com/",
     initials: "AL",
   },
   {
@@ -97,8 +97,8 @@ const businesses = [
     short: "Business essentials",
     description:
       "Business essentials and professional services helping entrepreneurs build and grow.",
-    domain: "NSVentureWorks.com",
-    url: "https://nsventureworks.com",
+    domain: "northsplash.shop",
+    url: "https://www.northsplash.shop/",
     initials: "VW",
   },
 ];
