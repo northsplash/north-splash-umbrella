@@ -102,7 +102,6 @@ const businesses = [
     initials: "VW",
   },
 ];
-
 const pageData = {
   home: {
     title: "Home",
