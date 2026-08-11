@@ -999,16 +999,18 @@ function App() {
         </div>
 
         <div className="footer-bottom">
-          <span>
-            © {new Date().getFullYear()} North Splash Enterprises.
-            All rights reserved.
-          </span>
+  <span>
+    © {new Date().getFullYear()} North Splash Enterprises.
+    All rights reserved.
+  </span>
 
-          <span>northsplash.com</span>
-        </div>
-      </footer>
-    </div>
-  );
+  <span>northsplash.com</span>
+
+  <span>Powered by NS Venture Works</span>
+</div>
+</footer>
+</div>
+);
 }
 
 export default App;
